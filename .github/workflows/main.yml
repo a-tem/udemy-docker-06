@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t artemvoloshyn/udemy-docker-06 -f Dockerfile.dev .
+
+      - name: Run tests
+        run: docker run -e CI=true artemvoloshyn/udemy-docker-06 npm run test
